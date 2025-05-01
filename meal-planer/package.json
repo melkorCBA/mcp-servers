@@ -1,0 +1,27 @@
+{
+  "name": "meal-planer-mcp-server",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "bin": {
+    "meal-planer-mcp-server": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "pnpm run build",
+    "watch": "tsc --watch",
+    "inspector": "pnpm dlx @modelcontextprotocol/inspector build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@9.15.1+sha512.1acb565e6193efbebda772702950469150cf12bcc764262e7587e71d19dc98a423dff9536e57ea44c49bdf790ff694e83c27be5faa23d67e0c033b583be4bfcf",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.10.2",
+    "axios": "^1.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  }
+}
