@@ -1,12 +1,26 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
+import type { AxiosInstance } from "axios";
+import path from "path";
+import fs from "fs";
+
+
+
 
 interface NutritionResponse {
     foods: [
         {
             nf_calories: number;
+            full_nutrients: [
+                {
+                    attr_id: number;
+                    value: number;
+                }
+            ]
         }
     ]
 }
+
+
 
 export class NutritionIX_API {
     private axios: AxiosInstance
@@ -28,6 +42,16 @@ export class NutritionIX_API {
             return response.data
         } catch (error) {
             throw new Error(`Error fetching nutrition info: ${error}`)
+        }
+    }
+
+
+    async getNutritionAttrData(): Promise<string> {
+        try {
+            const dataPath = path.resolve(path.dirname('./'), 'nutrition-attr-data.json');
+            return await fs.promises.readFile(dataPath, 'utf8');
+        } catch (error) {
+            throw new Error(`Error loading nutrition attribute data: ${error}`);
         }
     }
 }

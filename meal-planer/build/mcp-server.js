@@ -51,7 +51,7 @@ export class MCPServer {
                                 },
                             },
                             required: ["food"],
-                        }
+                        },
                     },
                 ],
             };
@@ -65,7 +65,13 @@ export class MCPServer {
                         name: 'my-meal-plan',
                         mimeType: 'text/plain',
                         uri: 'plan://mealPlan.txt'
-                    }
+                    },
+                    {
+                        name: 'nutrients-attr-data',
+                        description: 'the nutrition attribute data for mapping the full_nutrients data',
+                        mimeType: 'application/json',
+                        uri: 'data://nutrientsAttrData.txt'
+                    },
                 ]
             };
         });
@@ -81,7 +87,7 @@ export class MCPServer {
                             content: [
                                 {
                                     type: 'text',
-                                    text: `calories: ${response.foods[0].nf_calories}`,
+                                    text: `for 100 grams, calories: ${response.foods[0].nf_calories}\nfull_nutrients: ${JSON.stringify(response.foods[0].full_nutrients, null, 2)}`,
                                 }
                             ]
                         };
@@ -100,12 +106,22 @@ export class MCPServer {
             switch (uri) {
                 case 'plan://mealPlan.txt': {
                     const mealPlan = this.mealPlanService.fetchMealPlan();
-                    console.log('meal plan:', mealPlan);
                     return {
                         contents: [
                             {
                                 uri: "plan://mealPlan.txt",
                                 text: mealPlan,
+                            },
+                        ],
+                    };
+                }
+                case 'data://nutrientsAttrData.txt': {
+                    const data = await this.nutritionAPI.getNutritionAttrData();
+                    return {
+                        contents: [
+                            {
+                                uri: "data://nutrientsAttrData.txt",
+                                text: data,
                             },
                         ],
                     };

@@ -1,11 +1,13 @@
 import axios from "axios";
+import path from "path";
+import fs from "fs";
 export class NutritionIX_API {
     axios;
     constructor() {
         this.axios = axios.create({
             headers: {
-                'x-app-id': process.env.NUTRITIONIX_APP_ID ?? 'beb5af63',
-                'x-app-key': process.env.NUTRITIONIX_APP_KEY ?? '60b7c236d9cf4ced3f7bd0d8906ebdc4',
+                'x-app-id': process.env.NUTRITIONIX_APP_ID,
+                'x-app-key': process.env.NUTRITIONIX_APP_KEY,
                 'x-remote-user-id': '0',
                 'Content-Type': 'application/json',
             },
@@ -19,6 +21,15 @@ export class NutritionIX_API {
         }
         catch (error) {
             throw new Error(`Error fetching nutrition info: ${error}`);
+        }
+    }
+    async getNutritionAttrData() {
+        try {
+            const dataPath = path.resolve(path.dirname('./'), 'nutrition-attr-data.json');
+            return await fs.promises.readFile(dataPath, 'utf8');
+        }
+        catch (error) {
+            throw new Error(`Error loading nutrition attribute data: ${error}`);
         }
     }
 }
